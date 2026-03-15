@@ -1,202 +1,59 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-  <title>氨基酸侧链测验（R 基团 + ASCII 结构）</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>氨基酸测验</title>
   <style>
-    :root {
-      --primary: #4f46e5;
-      --primary-dark: #4338ca;
-      --bg: #f5f5fb;
-      --panel-bg: #ffffff;
-      --text-main: #111827;
-      --text-sub: #6b7280;
+    :root{
+      --primary:#4f46e5; --primary-dark:#4338ca; --bg:#f5f5fb; --panel:#fff;
+      --text:#111827; --muted:#6b7280;
     }
-    * {
-      box-sizing: border-box;
-      -webkit-tap-highlight-color: transparent;
+    *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+    body{
+      font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans","PingFang SC","Microsoft YaHei",sans-serif;
+      max-width:760px;margin:0 auto;padding:12px;background:var(--bg);color:var(--text);
     }
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "PingFang SC", "Microsoft YaHei", sans-serif;
-      max-width: 720px;
-      margin: 0 auto;
-      padding: 12px 12px 24px;
-      line-height: 1.6;
-      background: var(--bg);
-      color: var(--text-main);
-    }
-    h1 {
-      text-align: center;
-      margin: 12px 0 4px;
-      font-size: 1.4rem;
-    }
-    .subtitle {
-      text-align: center;
-      color: var(--text-sub);
-      margin-bottom: 12px;
-      font-size: 0.9rem;
-    }
-    .panel {
-      background: var(--panel-bg);
-      border-radius: 14px;
-      padding: 14px 14px 16px;
-      margin-bottom: 12px;
-      box-shadow: 0 2px 8px rgba(15, 23, 42, 0.06);
-    }
-    .panel h2 {
-      margin-top: 0;
-      font-size: 1rem;
-      border-left: 4px solid var(--primary);
-      padding-left: 8px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-    label {
-      font-weight: 600;
-      font-size: 0.9rem;
-    }
-    select, input[type="text"] {
-      padding: 10px 12px;
-      border-radius: 10px;
-      border: 1px solid #d1d5db;
-      font-size: 1rem;
-      width: 100%;
-      margin-top: 4px;
-      background: #f9fafb;
-    }
-    select:focus, input[type="text"]:focus {
-      outline: none;
-      border-color: var(--primary);
-      box-shadow: 0 0 0 1px rgba(79, 70, 229, 0.2);
-      background: #ffffff;
-    }
-    .row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-    }
-    .row > div {
-      flex: 1 1 180px;
-    }
-    button {
-      padding: 12px 18px;
-      border-radius: 999px;
-      border: none;
-      cursor: pointer;
-      font-size: 0.95rem;
-      font-weight: 600;
-      background: var(--primary);
-      color: #fff;
-      transition: background 0.15s ease, transform 0.05s ease, box-shadow 0.1s ease;
-      min-width: 120px;
-    }
-    button:active {
-      transform: scale(0.97);
-      box-shadow: 0 0 0 2px rgba(79, 70, 229, 0.25);
-    }
-    button:hover {
-      background: var(--primary-dark);
-    }
-    .btn-secondary {
-      background: #e5e7eb;
-      color: #111827;
-    }
-    .btn-secondary:hover {
-      background: #d1d5db;
-    }
-    .btn-block {
-      width: 100%;
-      margin-top: 8px;
-    }
-    .question {
-      font-size: 1rem;
-      margin: 6px 0 2px;
-    }
-    .question span.key {
-      font-weight: 700;
-      color: #1d4ed8;
-      font-family: "SF Mono", Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-      white-space: pre;
-      display: inline-block;
-    }
-    .info {
-      font-size: 0.9rem;
-      color: #555;
-    }
-    .feedback {
-      margin-top: 8px;
-      font-weight: 600;
-      font-size: 0.95rem;
-    }
-    .feedback.correct {
-      color: #16a34a;
-    }
-    .feedback.wrong {
-      color: #dc2626;
-    }
-    .answer-detail {
-      font-size: 0.9rem;
-      color: #374151;
-      margin-top: 4px;
-    }
-    .score {
-      font-size: 0.9rem;
-      margin-top: 4px;
-      color: #374151;
-    }
-    .tag {
-      display: inline-block;
-      padding: 2px 8px;
-      border-radius: 999px;
-      font-size: 0.75rem;
-      background: #eef2ff;
-      color: #3730a3;
-      margin-left: 6px;
-    }
-    .small {
-      font-size: 0.8rem;
-      color: #6b7280;
-    }
-    .struct-block {
-      margin-top: 4px;
-      padding: 6px 8px;
-      background: #f3f4f6;
-      border-radius: 8px;
-      font-family: "SF Mono", Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-      font-size: 0.8rem;
-      white-space: pre;
-      overflow-x: auto;
-    }
-    @media (max-width: 480px) {
-      h1 {
-        font-size: 1.25rem;
-      }
-      button {
-        width: 100%;
-      }
-      .row {
-        flex-direction: column;
-      }
-    }
+    h1{font-size:1.3rem;text-align:center;margin:12px 0 4px}
+    .subtitle{font-size:0.9rem;text-align:center;color:var(--muted);margin-bottom:12px}
+    .panel{background:var(--panel);border-radius:12px;padding:14px;margin-bottom:12px;box-shadow:0 2px 8px rgba(15,23,42,0.06)}
+    .panel h2{margin:0 0 8px;font-size:1rem;border-left:4px solid var(--primary);padding-left:8px;display:flex;justify-content:space-between;align-items:center}
+    label{font-weight:600;font-size:0.95rem}
+    select,input[type="text"]{width:100%;padding:10px;border-radius:10px;border:1px solid #d1d5db;margin-top:6px;background:#fbfbff;font-size:1rem}
+    .row{display:flex;gap:10px;flex-wrap:wrap}
+    .row>div{flex:1 1 180px}
+    button{padding:12px;border-radius:999px;border:none;background:var(--primary);color:#fff;font-weight:700;cursor:pointer;min-width:120px}
+    .btn-secondary{background:#e5e7eb;color:#111827}
+    .btn-block{width:100%;margin-top:10px}
+    .question{font-size:1rem;margin:8px 0}
+    .key{font-weight:700;color:#1d4ed8;font-family:monospace;white-space:pre;display:inline-block}
+    .struct-block{background:#f3f4f6;padding:10px;border-radius:8px;font-family:monospace;white-space:pre;overflow:auto;margin-top:6px}
+    .group-label{font-size:0.85rem;color:var(--muted);margin-top:6px}
+    .choices{margin-top:8px;display:flex;flex-direction:column;gap:8px}
+    .choice{background:#fff;border:1px solid #e5e7eb;padding:10px;border-radius:10px;display:flex;align-items:center;gap:10px;cursor:pointer}
+    .choice input{transform:scale(1.1)}
+    .feedback{margin-top:10px;font-weight:700}
+    .feedback.correct{color:#16a34a}
+    .feedback.wrong{color:#dc2626}
+    .small{font-size:0.85rem;color:var(--muted)}
+    @media(max-width:480px){button{width:100%}.row{flex-direction:column}}
   </style>
 </head>
 <body>
-  <h1>氨基酸侧链测验</h1>
-  <div class="subtitle">R 基团 ASCII 结构 / 三字母 / 单字母 / 中英文名</div>
+  <h1>氨基酸测验</h1>
+  <div class="subtitle">针对氨基酸名称、简写与结构的简单测验</div>
 
   <div class="panel">
-    <h2>测验设置 <span class="tag" id="modeTag"></span></h2>
+    <h2>测验设置 <span id="modeTag" style="font-size:0.85rem;color:var(--muted)"></span></h2>
     <div class="row">
       <div>
         <label for="questionFrom">题目给出字段</label>
         <select id="questionFrom">
-          <option value="en">英文名 (Alanine)</option>
-          <option value="three">三字母 (Ala)</option>
-          <option value="one">单字母 (A)</option>
-          <option value="cn">中文名 (丙氨酸)</option>
-          <option value="struct">R 基团 ASCII 结构</option>
+          <option value="en">英文名</option>
+          <option value="three">三字母</option>
+          <option value="one">单字母</option>
+          <option value="cn">中文名</option>
+          <option value="struct">氨基酸结构</option>
         </select>
       </div>
       <div>
@@ -206,446 +63,431 @@
           <option value="one">单字母</option>
           <option value="cn">中文名</option>
           <option value="en">英文名</option>
-          <option value="struct">R 基团 ASCII 结构</option>
+          <option value="struct">氨基酸结构</option>
         </select>
       </div>
     </div>
-    <p class="small" style="margin-top:6px;">
-      主链默认为 NH₂–CH(R)–COOH，仅考 R 基团。可以练：结构 → 名称 / 缩写，或反向。
-    </p>
+    <p class="small" style="margin-top:8px">结构显示下方会标注基团名称（如吲哚、咪唑等）。当目标为结构时以选择题形式进行测试。</p>
     <button id="newQuestionBtn" class="btn-block">生成新题目</button>
   </div>
 
   <div class="panel">
     <h2>当前题目</h2>
-    <div id="questionArea">
-      <p class="info">点击“生成新题目”开始。</p>
-    </div>
-    <div id="answerArea" style="display:none; margin-top:10px;">
-      <label for="answerInput">你的答案</label>
-      <input type="text" id="answerInput" autocomplete="off" placeholder="在这里输入答案…" />
-      <div style="margin-top:10px; display:flex; gap:8px; flex-wrap:wrap;">
-        <button id="submitBtn" style="flex:1;">提交</button>
-        <button id="showAnswerBtn" class="btn-secondary" style="flex:1;">显示答案</button>
+    <div id="questionArea"><p class="small">点击“生成新题目”开始。</p></div>
+
+    <div id="answerArea" style="display:none;margin-top:10px">
+      <div id="inputArea"></div>
+      <div style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap">
+        <button id="submitBtn" style="flex:1">提交</button>
+        <button id="showAnswerBtn" class="btn-secondary" style="flex:1">显示答案</button>
       </div>
       <div id="feedback" class="feedback"></div>
-      <div id="answerDetail" class="answer-detail"></div>
-      <div id="score" class="score"></div>
+      <div id="answerDetail" style="margin-top:8px;color:#374151"></div>
+      <div id="score" style="margin-top:8px;color:#374151"></div>
     </div>
   </div>
 
   <div class="panel">
     <h2>题库说明</h2>
-    <p class="small">
-      当前包含 20 种标准蛋白质氨基酸：中文名、英文名、三字母、单字母、R 基团 ASCII 结构。
-      R 基团以多行 ASCII 形式表示，方便在脑中联想真实结构。你可以在源码中的
-      <code>aminoAcids</code> 数组中按自己习惯微调。
-    </p>
+    <p class="small">题库包含 20 种标准氨基酸。每条记录含：中文名、英文名、三字母、单字母、氨基酸结构与基团名称（group）。</p>
   </div>
 
-  <script>
-    // 20 standard amino acids with R-group ASCII structures
-    const aminoAcids = [
-      {
-        cn: "丙氨酸",
-        en: "Alanine",
-        three: "Ala",
-        one: "A",
-        struct: "R = CH3"
-      },
-      {
-        cn: "精氨酸",
-        en: "Arginine",
-        three: "Arg",
-        one: "R",
-        struct:
-`R =
-  (CH2)3
-     |
-    NH
-     |
-   C(=NH)
-     |
-    NH2`
-      },
-      {
-        cn: "天冬酰胺",
-        en: "Asparagine",
-        three: "Asn",
-        one: "N",
-        struct:
-`R =
-  CH2
-   |
-  CONH2`
-      },
-      {
-        cn: "天冬氨酸",
-        en: "Aspartic acid",
-        three: "Asp",
-        one: "D",
-        struct:
-`R =
-  CH2
-   |
-  COOH`
-      },
-      {
-        cn: "半胱氨酸",
-        en: "Cysteine",
-        three: "Cys",
-        one: "C",
-        struct:
-`R =
-  CH2
-   |
-   SH`
-      },
-      {
-        cn: "谷氨酸",
-        en: "Glutamic acid",
-        three: "Glu",
-        one: "E",
-        struct:
-`R =
- (CH2)2
+<script>
+const aminoAcids = [
+  {cn:"丙氨酸",en:"Alanine",three:"Ala",one:"A",struct_full:
+`    H   O
+    |   ||
+H2N-C---C-OH
     |
-   COOH`
-      },
-      {
-        cn: "谷氨酰胺",
-        en: "Glutamine",
-        three: "Gln",
-        one: "Q",
-        struct:
-`R =
- (CH2)2
-    |
-  CONH2`
-      },
-      {
-        cn: "甘氨酸",
-        en: "Glycine",
-        three: "Gly",
-        one: "G",
-        struct: "R = H"
-      },
-      {
-        cn: "组氨酸",
-        en: "Histidine",
-        three: "His",
-        one: "H",
-        struct:
-`R =
-  CH2
-   |
-Imidazole`
-      },
-      {
-        cn: "异亮氨酸",
-        en: "Isoleucine",
-        three: "Ile",
-        one: "I",
-        struct:
-`R =
-  CH
- /  \
-CH3  CH2-CH3`
-      },
-      {
-        cn: "亮氨酸",
-        en: "Leucine",
-        three: "Leu",
-        one: "L",
-        struct:
-`R =
-  CH2
-   |
-  CH
- /  \
-CH3 CH3`
-      },
-      {
-        cn: "赖氨酸",
-        en: "Lysine",
-        three: "Lys",
-        one: "K",
-        struct:
-`R =
- (CH2)4
-    |
-   NH2`
-      },
-      {
-        cn: "蛋氨酸",
-        en: "Methionine",
-        three: "Met",
-        one: "M",
-        struct:
-`R =
- CH2-CH2-S-CH3`
-      },
-      {
-        cn: "苯丙氨酸",
-        en: "Phenylalanine",
-        three: "Phe",
-        one: "F",
-        struct:
-`R =
-  CH2
-   |
-  Ph`
-      },
-      {
-        cn: "脯氨酸",
-        en: "Proline",
-        three: "Pro",
-        one: "P",
-        struct:
-`R =
- (CH2)3
-   \  /
-    NH
- (与主链成五元环)`
-      },
-      {
-        cn: "丝氨酸",
-        en: "Serine",
-        three: "Ser",
-        one: "S",
-        struct:
-`R =
-  CH2
-   |
-   OH`
-      },
-      {
-        cn: "苏氨酸",
-        en: "Threonine",
-        three: "Thr",
-        one: "T",
-        struct:
-`R =
-  CH
- /  \
-OH  CH3`
-      },
-      {
-        cn: "色氨酸",
-        en: "Tryptophan",
-        three: "Trp",
-        one: "W",
-        struct:
-`R =
-  CH2
-   |
- Indole`
-      },
-      {
-        cn: "酪氨酸",
-        en: "Tyrosine",
-        three: "Tyr",
-        one: "Y",
-        struct:
-`R =
-  CH2
-   |
-  Ph
-   |
-   OH`
-      },
-      {
-        cn: "缬氨酸",
-        en: "Valine",
-        three: "Val",
-        one: "V",
-        struct:
-`R =
-  CH
- /  \
-CH3 CH3`
-      }
-    ];
+    CH3`, group:"烷基"},
 
+  {cn:"精氨酸",en:"Arginine",three:"Arg",one:"R",struct_full:
+`    H   O
+    |   ||
+H2N-C---C-OH
+    |
+    CH2
+    |
+    CH2
+    |
+    CH2
+    |
+    NH-C(=NH)-NH2`, group:"带正电（胍基）"},
+
+  {cn:"天冬酰胺",en:"Asparagine",three:"Asn",one:"N",struct_full:
+`    H   O
+    |   ||
+H2N-C---C-OH
+    |
+    CH2
+    |
+    CONH2`, group:"极性不带电（酰胺）"},
+
+  {cn:"天冬氨酸",en:"Aspartic acid",three:"Asp",one:"D",struct_full:
+`    H   O
+    |   ||
+H2N-C---C-OH
+    |
+    CH2
+    |
+    COOH`, group:"带负电（羧酸）"},
+
+  {cn:"半胱氨酸",en:"Cysteine",three:"Cys",one:"C",struct_full:
+`    H   O
+    |   ||
+H2N-C---C-OH
+    |
+    CH2
+    |
+    SH`, group:"含硫（巯基）"},
+
+  {cn:"谷氨酸",en:"Glutamic acid",three:"Glu",one:"E",struct_full:
+`    H   O
+    |   ||
+H2N-C---C-OH
+    |
+    CH2
+    |
+    CH2
+    |
+    COOH`, group:"带负电（羧酸）"},
+
+  {cn:"谷氨酰胺",en:"Glutamine",three:"Gln",one:"Q",struct_full:
+`    H   O
+    |   ||
+H2N-C---C-OH
+    |
+    CH2
+    |
+    CH2
+    |
+    CONH2`, group:"极性不带电（酰胺）"},
+
+  {cn:"甘氨酸",en:"Glycine",three:"Gly",one:"G",struct_full:
+`    H   O
+    |   ||
+H2N-C---C-OH
+    |
+    H`, group:"最简单（无侧链）"},
+
+  {cn:"组氨酸",en:"Histidine",three:"His",one:"H",struct_full:
+`    H   O
+    |   ||
+H2N-C---C-OH
+    |
+    CH2
+    |
+    C
+  // \\
+ C    N
+ |    ||
+ HN----C`, group:"芳香族（咪唑）"},
+
+  {cn:"异亮氨酸",en:"Isoleucine",three:"Ile",one:"I",struct_full:
+`    H   O
+    |   ||
+H2N-C---C-OH
+    |
+    CH
+   /  \\
+  CH3  CH2-CH3`, group:"疏水支链"},
+
+  {cn:"亮氨酸",en:"Leucine",three:"Leu",one:"L",struct_full:
+`    H   O
+    |   ||
+H2N-C---C-OH
+    |
+    CH2
+    |
+    CH
+   /  \\
+  CH3  CH3`, group:"疏水支链"},
+
+  {cn:"赖氨酸",en:"Lysine",three:"Lys",one:"K",struct_full:
+`    H   O
+    |   ||
+H2N-C---C-OH
+    |
+    CH2
+    |
+    CH2
+    |
+    CH2
+    |
+    CH2
+    |
+    NH2`, group:"带正电（氨基）"},
+
+  {cn:"蛋氨酸",en:"Methionine",three:"Met",one:"M",struct_full:
+`    H   O
+    |   ||
+H2N-C---C-OH
+    |
+    CH2
+    |
+    CH2
+    |
+    S-CH3`, group:"含硫（硫醚）"},
+
+  {cn:"苯丙氨酸",en:"Phenylalanine",three:"Phe",one:"F",struct_full:
+`    H   O
+    |   ||
+H2N-C---C-OH
+    |
+    CH2-Ph`, group:"芳香族（苯基）"},
+
+  {cn:"脯氨酸",en:"Proline",three:"Pro",one:"P",struct_full:
+`           H   O
+           |   ||
+ HN--------C---C-OH
+  \\        |
+   CH2-CH2-CH2`, group:"环状（吡咯烷）"},
+
+  {cn:"丝氨酸",en:"Serine",three:"Ser",one:"S",struct_full:
+`    H   O
+    |   ||
+H2N-C---C-OH
+    |
+    CH2
+    |
+    OH`, group:"极性（羟基）"},
+
+  {cn:"苏氨酸",en:"Threonine",three:"Thr",one:"T",struct_full:
+`    H   O
+    |   ||
+H2N-C---C-OH
+    |
+    CH
+   /  \\
+  OH  CH3`, group:"极性（羟基）"},
+
+  {cn:"色氨酸",en:"Tryptophan",three:"Trp",one:"W",struct_full:
+`    H   O
+    |   ||
+H2N-C---C-OH
+    |
+    CH2-Indole`, group:"芳香族（吲哚）"},
+
+  {cn:"酪氨酸",en:"Tyrosine",three:"Tyr",one:"Y",struct_full:
+`    H   O
+    |   ||
+H2N-C---C-OH
+    |
+    CH2-Ph-OH`, group:"芳香族（对羟基苯基）"},
+
+  {cn:"缬氨酸",en:"Valine",three:"Val",one:"V",struct_full:
+`    H   O
+    |   ||
+H2N-C---C-OH
+    |
+    CH
+   /  \\
+ CH3  CH3`, group:"疏水支链"}
+];
+
+
+    // state
     let currentQuestion = null;
-    let total = 0;
-    let correct = 0;
+    let total = 0, correct = 0;
 
-    const questionFromSelect = document.getElementById("questionFrom");
-    const questionToSelect = document.getElementById("questionTo");
-    const newQuestionBtn = document.getElementById("newQuestionBtn");
+    // elements
+    const qFrom = document.getElementById("questionFrom");
+    const qTo = document.getElementById("questionTo");
+    const newQBtn = document.getElementById("newQuestionBtn");
     const questionArea = document.getElementById("questionArea");
     const answerArea = document.getElementById("answerArea");
-    const answerInput = document.getElementById("answerInput");
+    const inputArea = document.getElementById("inputArea");
     const submitBtn = document.getElementById("submitBtn");
     const showAnswerBtn = document.getElementById("showAnswerBtn");
-    const feedbackDiv = document.getElementById("feedback");
-    const answerDetailDiv = document.getElementById("answerDetail");
+    const feedback = document.getElementById("feedback");
+    const answerDetail = document.getElementById("answerDetail");
     const scoreDiv = document.getElementById("score");
     const modeTag = document.getElementById("modeTag");
 
-    function updateModeTag() {
-      const from = questionFromSelect.value;
-      const to = questionToSelect.value;
-      const mapLabel = {
-        cn: "中文名",
-        en: "英文名",
-        three: "三字母",
-        one: "单字母",
-        struct: "R 基团结构"
-      };
-      modeTag.textContent = mapLabel[from] + " → " + mapLabel[to];
+    // text input element for non-struct answers or when from is struct
+    const textInput = document.createElement("input");
+    textInput.type = "text";
+    textInput.placeholder = "在此输入答案（大小写不敏感）";
+    textInput.style.marginTop = "8px";
+    textInput.style.padding = "10px";
+    textInput.style.borderRadius = "10px";
+    textInput.style.border = "1px solid #d1d5db";
+    textInput.style.width = "100%";
+
+    function updateModeTag(){
+      const map = {cn:"中文名",en:"英文名",three:"三字母",one:"单字母",struct:"R 基团结构"};
+      modeTag.textContent = map[qFrom.value] + " → " + map[qTo.value];
     }
 
-    function normalize(str) {
-      return (str || "").trim().toLowerCase();
+    function randInt(n){ return Math.floor(Math.random()*n); }
+
+    function pickDistractors(correctIndex, field, count=3){
+      const pool = aminoAcids.map((a,i)=>({val:a[field],i})).filter(x=>x.i!==correctIndex);
+      for(let i=pool.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[pool[i],pool[j]]=[pool[j],pool[i]];}
+      return pool.slice(0,count).map(x=>x.val);
     }
 
-    function getFieldLabel(key) {
-      const labelMap = {
-        cn: "中文名",
-        en: "英文名",
-        three: "三字母缩写",
-        one: "单字母缩写",
-        struct: "R 基团 ASCII 结构"
-      };
-      return labelMap[key] || key;
+    function renderStructBlock(text){
+      return `<div class="struct-block">${text}</div>`;
     }
 
-    function getFieldValue(aa, key) {
-      return aa[key];
+    function renderGroupLabel(g){
+      return `<div class="group-label">基团：${g}</div>`;
     }
 
-    function renderKey(value, isStruct) {
-      if (!isStruct) {
-        return `<span class="key">${value}</span>`;
-      }
-      return `<div class="struct-block">${value}</div>`;
+    function renderChoices(options){
+      const id = "choices-" + Date.now();
+      let html = `<div class="choices" id="${id}">`;
+      options.forEach((opt, idx)=>{
+        const valEsc = opt.value.replace(/"/g,'&quot;');
+        const display = opt.isStruct ? `<div class="struct-block">${opt.label}</div>` : `<div>${opt.label}</div>`;
+        html += `<label class="choice"><input type="radio" name="${id}" value="${valEsc}" ${idx===0?'checked':''}/> ${display}</label>`;
+      });
+      html += `</div>`;
+      return html;
     }
 
-    function newQuestion() {
-      const from = questionFromSelect.value;
-      const to = questionToSelect.value;
-      if (from === to) {
-        alert("题目字段和作答字段不能相同，请修改设置。");
-        return;
-      }
-
-      const idx = Math.floor(Math.random() * aminoAcids.length);
+    function newQuestion(){
+      const from = qFrom.value, to = qTo.value;
+      if(from === to){ alert("题目字段和作答字段不能相同，请修改设置。"); return; }
+      const idx = randInt(aminoAcids.length);
       const aa = aminoAcids[idx];
-      currentQuestion = { aa, from, to };
+      currentQuestion = {aa, from, to, idx};
 
-      const keyText = getFieldValue(aa, from);
-      const fromLabel = getFieldLabel(from);
-      const toLabel = getFieldLabel(to);
+      const labelMap = {cn:"中文名",en:"英文名",three:"三字母",one:"单字母",struct:"R 基团结构"};
+      let qHtml = `<p class="question">已知 <strong>${labelMap[from]}</strong> 为</p>`;
 
-      const isStructFrom = from === "struct";
+      if(from === "struct"){
+        qHtml += renderStructBlock(aa.struct_full);
+        qHtml += renderGroupLabel(aa.group);
+      } else {
+        qHtml += `<p class="question"><span class="key">${aa[from]}</span></p>`;
+      }
+      qHtml += `<p class="question" style="margin-top:6px">请写出对应的 <strong>${labelMap[to]}</strong>。</p>`;
+      questionArea.innerHTML = qHtml;
 
-      questionArea.innerHTML = `
-        <p class="question">
-          已知 <strong>${fromLabel}</strong> 为
-        </p>
-        ${renderKey(keyText, isStructFrom)}
-        <p class="question" style="margin-top:6px;">
-          请写出对应的 <strong>${toLabel}</strong>。
-        </p>
-      `;
-
+      // prepare answer area
+      inputArea.innerHTML = "";
+      feedback.textContent = "";
+      answerDetail.innerHTML = "";
       answerArea.style.display = "block";
-      feedbackDiv.textContent = "";
-      feedbackDiv.className = "feedback";
-      answerDetailDiv.textContent = "";
-      answerInput.value = "";
-      answerInput.focus();
-      updateScore();
+
+      // Behavior:
+      // - If from === 'struct' -> user sees structure and must type the target (text input)
+      // - Else if to === 'struct' -> present 4 struct choices (correct + 3 distractors)
+      // - Else -> text input
+      if(from === "struct"){
+        // text input for answering any target when question is structure
+        inputArea.appendChild(textInput);
+        textInput.value = "";
+        textInput.focus();
+      } else if(to === "struct"){
+        // multiple choice for structure
+        const correctStruct = aa.struct_full;
+        const distractors = pickDistractors(idx, "struct_full", 3);
+        const opts = [{label:correctStruct, value:correctStruct, isStruct:true}].concat(distractors.map(d=>({label:d,value:d,isStruct:true})));
+        for(let i=opts.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[opts[i],opts[j]]=[opts[j],opts[i]];}
+        inputArea.innerHTML = renderChoices(opts);
+      } else {
+        // plain text input
+        inputArea.appendChild(textInput);
+        textInput.value = "";
+        textInput.focus();
+      }
       updateModeTag();
+      updateScore();
     }
 
-    function checkAnswer() {
-      if (!currentQuestion) return;
-      const userAns = normalize(answerInput.value);
-      if (!userAns) {
-        feedbackDiv.textContent = "先写一个答案再提交。";
-        feedbackDiv.className = "feedback wrong";
-        return;
+    function getSelectedChoiceValue(){
+      const radios = inputArea.querySelectorAll('input[type="radio"]');
+      if(!radios || radios.length===0) return null;
+      for(const r of radios) if(r.checked) return r.value;
+      return null;
+    }
+
+    function normalize(s){
+      return (s||"").toString().trim().toLowerCase().replace(/\s+/g," ");
+    }
+
+    function checkAnswer(){
+      if(!currentQuestion) return;
+      const {aa, to, idx, from} = currentQuestion;
+      let userAns = "";
+      if(to === "struct" && from !== "struct"){
+        const sel = getSelectedChoiceValue();
+        if(!sel){ feedback.textContent = "请选择一个选项再提交。"; feedback.className="feedback wrong"; return; }
+        userAns = sel;
+      } else {
+        userAns = (textInput.value || "").trim();
+        if(!userAns){ feedback.textContent = "先写一个答案再提交。"; feedback.className="feedback wrong"; return; }
       }
 
-      const { aa, to } = currentQuestion;
-      const correctAnsRaw = getFieldValue(aa, to);
-      const correctAns = normalize(
-        to === "struct" ? correctAnsRaw.replace(/\s+/g, " ") : correctAnsRaw
-      );
+      const correctRaw = aa[to];
+      // For struct comparison, compare normalized whitespace
+      const correctForCompare = to === "struct" ? normalize(aa.struct_full.replace(/\s+/g," ")) : normalize(correctRaw);
+      const userForCompare = to === "struct" ? normalize(userAns.replace(/\s+/g," ")) : normalize(userAns);
+
+      const ok = userForCompare === correctForCompare;
 
       total += 1;
-      if (userAns === correctAns) {
-        correct += 1;
-        feedbackDiv.textContent = "✔ 正确！";
-        feedbackDiv.className = "feedback correct";
-      } else {
-        feedbackDiv.textContent = "✘ 不完全对。";
-        feedbackDiv.className = "feedback wrong";
-      }
+      if(ok){ correct += 1; feedback.textContent = "✔ 正确！"; feedback.className="feedback correct"; }
+      else { feedback.textContent = "✘ 不完全对。"; feedback.className="feedback wrong"; }
 
-      answerDetailDiv.innerHTML = `
-        正确答案：${
-          to === "struct"
-            ? `<div class="struct-block">${correctAnsRaw}</div>`
-            : `<strong>${correctAnsRaw}</strong>`
-        }
-        <div style="margin-top:4px;">
-          当前氨基酸：${aa.cn} / ${aa.en} / ${aa.three} / ${aa.one}
-        </div>
-        <div class="struct-block" style="margin-top:4px;">
-主链：NH2-CH(R)-COOH
-${aa.struct}
-        </div>
-      `;
+      // show answer detail
+      let detailHtml = "";
+      if(to === "struct"){
+        detailHtml += `<div>正确答案：${renderStructInline(aa.struct_full)}</div>`;
+      } else {
+        detailHtml += `<div>正确答案：<strong>${aa[to]}</strong></div>`;
+      }
+      detailHtml += `<div style="margin-top:6px">当前氨基酸：${aa.cn} / ${aa.en} / ${aa.three} / ${aa.one}</div>`;
+      detailHtml += `<div class="struct-block" style="margin-top:8px">主链：NH2-CH(R)-COOH\n${aa.struct_full}</div>`;
+      detailHtml += `<div class="group-label" style="margin-top:6px">基团：${aa.group}</div>`;
+      answerDetail.innerHTML = detailHtml;
       updateScore();
     }
 
-    function showAnswer() {
-      if (!currentQuestion) return;
-      const { aa, to } = currentQuestion;
-      const correctAnsRaw = getFieldValue(aa, to);
-
-      feedbackDiv.textContent = "参考答案已显示。";
-      feedbackDiv.className = "feedback";
-      answerDetailDiv.innerHTML = `
-        正确答案：${
-          to === "struct"
-            ? `<div class="struct-block">${correctAnsRaw}</div>`
-            : `<strong>${correctAnsRaw}</strong>`
-        }
-        <div style="margin-top:4px;">
-          当前氨基酸：${aa.cn} / ${aa.en} / ${aa.three} / ${aa.one}
-        </div>
-        <div class="struct-block" style="margin-top:4px;">
-主链：NH2-CH(R)-COOH
-${aa.struct}
-        </div>
-      `;
+    function renderStructInline(s){
+      return `<div class="struct-block" style="display:inline-block;max-width:100%">${s}</div>`;
     }
 
-    function updateScore() {
-      if (total === 0) {
-        scoreDiv.textContent = "当前还没有统计成绩。";
+    function showAnswer(){
+      if(!currentQuestion) return;
+      const {aa,to} = currentQuestion;
+      feedback.textContent = "参考答案已显示。";
+      feedback.className = "feedback";
+      let detailHtml = "";
+      if(to === "struct"){
+        detailHtml += `<div>正确答案：${renderStructInline(aa.struct_full)}</div>`;
       } else {
-        const rate = ((correct / total) * 100).toFixed(1);
-        scoreDiv.textContent = `累计：${correct} / ${total}，正确率 ${rate}%`;
+        detailHtml += `<div>正确答案：<strong>${aa[to]}</strong></div>`;
       }
+      detailHtml += `<div style="margin-top:6px">当前氨基酸：${aa.cn} / ${aa.en} / ${aa.three} / ${aa.one}</div>`;
+      detailHtml += `<div class="struct-block" style="margin-top:8px">主链：NH2-CH(R)-COOH\n${aa.struct_full}</div>`;
+      detailHtml += `<div class="group-label" style="margin-top:6px">基团：${aa.group}</div>`;
+      answerDetail.innerHTML = detailHtml;
     }
 
-    newQuestionBtn.addEventListener("click", newQuestion);
-    submitBtn.addEventListener("click", checkAnswer);
-    showAnswerBtn.addEventListener("click", showAnswer);
-    questionFromSelect.addEventListener("change", updateModeTag);
-    questionToSelect.addEventListener("change", updateModeTag);
+    function updateScore(){
+      if(total===0) scoreDiv.textContent = "当前还没有统计成绩。";
+      else scoreDiv.textContent = `累计：${correct} / ${total}，正确率 ${(correct/total*100).toFixed(1)}%`;
+    }
 
-    answerInput.addEventListener("keydown", (e) => {
-      if (e.key === "Enter") {
-        checkAnswer();
+    // clicking a choice label checks the radio
+    document.addEventListener("click", (e)=>{
+      const lbl = e.target.closest(".choice");
+      if(lbl){
+        const r = lbl.querySelector('input[type="radio"]');
+        if(r) r.checked = true;
       }
     });
+
+    newQBtn.addEventListener("click", newQuestion);
+    submitBtn.addEventListener("click", checkAnswer);
+    showAnswerBtn.addEventListener("click", showAnswer);
+    qFrom.addEventListener("change", updateModeTag);
+    qTo.addEventListener("change", updateModeTag);
+    textInput.addEventListener("keydown", (e)=>{ if(e.key==="Enter") checkAnswer(); });
 
     updateModeTag();
   </script>
